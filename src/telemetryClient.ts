@@ -1,7 +1,7 @@
+import fetch from 'node-fetch';
 import { TelemetryConfig } from './telemetryConfig';
 import { Telemetry } from './telemetry';
 import { version, endpoint, hash } from './sensitiveInformation.json';
-import fetch from 'node-fetch';
 
 interface TelemetryMetadata {
   telemetryClientVersion: string;
@@ -59,7 +59,7 @@ export class TelemetryClient {
       authenticated: this.config.allowedToPassAuthenticationStatus ?? true,
       timeout: this.config.allowedToPassTimeout ?? true,
       requestEndTime: this.config.allowedToPassRequestTimings ?? true,
-      requestStartTime: this.config.allowedToPassRequestTimings ?? true
+      requestStartTime: this.config.allowedToPassRequestTimings ?? true,
     };
 
     const preparedTelemetry: Partial<Telemetry> = {};

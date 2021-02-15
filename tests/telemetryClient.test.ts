@@ -58,14 +58,17 @@ describe('TelemetryClient', () => {
 
   it('should accept full config value', () => {
     const telemetryClient = new TelemetryClient({
+      allowedToPassRequestTimings: true,
+      allowedToPassTimeout: true,
       allowedToPassAuthenticationStatus: true,
       allowedToPassRequestStatusCode: true,
     });
 
     // @ts-ignore
     expect(telemetryClient.config).toEqual({
-      allowedToPassMethodName: true,
-      allowedToPassAuthenticationType: true,
+      allowedToPassRequestTimings: true,
+      allowedToPassTimeout: true,
+      allowedToPassAuthenticationStatus: true,
       allowedToPassRequestStatusCode: true,
     });
   });
@@ -77,13 +80,23 @@ describe('TelemetryClient', () => {
 
     // @ts-ignore
     expect(telemetryClient.config).toEqual({
-      allowedToPassMethodName: true,
-      allowedToPassAuthenticationType: false,
+      allowedToPassRequestTimings: undefined,
+      allowedToPassTimeout: undefined,
+      allowedToPassAuthenticationStatus: false,
       allowedToPassRequestStatus: undefined,
     });
   });
 
   describe('prepareTelemetry method', () => {
+    it('should not send telemetry when config is \'false\'', () => {
+      const telemetryClient = new TelemetryClient(false);
+
+      // @ts-ignore
+      const preparedTelemetry = telemetryClient.prepareTelemetry(telemetryMock);
+
+      expect(preparedTelemetry).toEqual({});
+    });
+
     it('should return empty telemetry data case 1', () => {
       const telemetryClient = new TelemetryClient({});
 
@@ -104,6 +117,8 @@ describe('TelemetryClient', () => {
 
     it('should return empty telemetry data case 3', () => {
       const telemetryClient = new TelemetryClient({
+        allowedToPassRequestTimings: false,
+        allowedToPassTimeout: false,
         allowedToPassAuthenticationStatus: false,
         allowedToPassRequestStatusCode: false,
       });
@@ -111,7 +126,16 @@ describe('TelemetryClient', () => {
       // @ts-ignore
       const preparedTelemetry = telemetryClient.prepareTelemetry(telemetryMock);
 
-      expect(preparedTelemetry).toEqual({});
+      expect(preparedTelemetry).toEqual({
+        bodyExists: false,
+        callbackUsed: false,
+        libVersion: '2.0.0',
+        libVersionHash: 'd233662f9c26d1a06118c93ef2fd1de9',
+        methodName: 'getProjects',
+        onErrorMiddlewareUser: false,
+        onResponseMiddlewareUsed: false,
+        queryExists: true,
+      });
     });
 
     it('should return full telemetry data case 1', () => {
@@ -153,9 +177,8 @@ describe('TelemetryClient', () => {
       const preparedTelemetry = telemetryClient.prepareTelemetry(telemetryMock);
 
       expect(preparedTelemetry).toEqual({
-        libVersion: telemetryMock.libVersion,
-        libVersionHash: telemetryMock.libVersionHash,
-        requestStatusCode: telemetryMock.requestStatusCode,
+        ...telemetryMock,
+        authenticated: undefined,
       });
     });
   });
