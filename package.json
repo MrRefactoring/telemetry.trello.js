@@ -1,6 +1,6 @@
 {
   "name": "telemetry.trello.js",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Telemetry client for trello.js",
   "repository": "https://github.com/MrRefactoring/telemetry.trello.js",
   "author": "Vladislav Tupikin <mrrefactoring@yandex.ru>",
@@ -8,28 +8,10 @@
   "types": "out/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "prepublishOnly": "npm run build && npm run test && npm run lint",
-    "lint": "eslint src tests --ext .ts",
-    "lint:fix": "npm run lint -- --fix",
-    "test": "jest",
-    "test:coverage": "npm run test -- --coverage"
-  },
-  "jest": {
-    "preset": "ts-jest"
+    "prepublishOnly": "npm run build"
   },
   "devDependencies": {
-    "@types/node-fetch": "^2.5.8",
-    "@typescript-eslint/eslint-plugin": "^4.15.1",
-    "@typescript-eslint/parser": "^4.15.1",
-    "eslint": "^7.20.0",
-    "eslint-config-airbnb-typescript": "^12.3.1",
-    "eslint-import-resolver-typescript": "^2.3.0",
-    "eslint-plugin-import": "^2.22.1",
-    "jest": "^26.6.3",
-    "ts-jest": "^26.5.1",
-    "typescript": "^4.1.5"
+    "typescript": "^4.5.2"
   },
-  "dependencies": {
-    "node-fetch": "^2.6.1"
-  }
+  "dependencies": {}
 }
